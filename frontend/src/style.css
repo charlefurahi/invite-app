@@ -1,0 +1,23 @@
+body{font-family:system-ui,sans-serif;margin:0;background:#faf7f2;color:#2b2b2b}
+.wrap{max-width:760px;margin:0 auto;padding:20px}
+.card{background:#fff;border-radius:14px;padding:20px;margin:14px 0;box-shadow:0 1px 6px #0001}
+input,textarea,select,button{font:inherit;padding:10px;border-radius:8px;border:1px solid #ccc;width:100%;box-sizing:border-box;margin:4px 0}
+button{background:#7a4b3a;color:#fff;border:0;cursor:pointer;width:auto;padding:10px 16px}
+button.alt{background:#eee;color:#333}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px;border-bottom:1px solid #eee;text-align:left}
+.invite{text-align:center;font-family:Georgia,serif}.invite h1{font-size:2.2rem;margin:.3em 0}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1}
+.page{min-height:100vh}
+.theme-classic{background:#faf7f2}
+.theme-floral{background:linear-gradient(#fdeef2,#fff5f0)}.theme-floral .invite h1{color:#b0476a}
+.theme-modern{background:#f2f4f7}.theme-modern .invite{font-family:system-ui,sans-serif}.theme-modern .invite h1{letter-spacing:.2em;text-transform:uppercase;font-size:1.8rem}
+.theme-dark{background:#14141c;color:#eee}.theme-dark .card{background:#1f1f2b}.theme-dark .invite h1{color:#d4af37}.theme-dark a{color:#d4af37}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}.gallery img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px}
+.sched div{display:flex;gap:12px;padding:6px 0;border-bottom:1px solid #8883}.sched b{min-width:80px}
+#reader{width:100%;max-width:360px;margin:auto}
+.ok{background:#e6f6e9;color:#1c6b2c;padding:10px;border-radius:8px}.warn{background:#fff3df;color:#8a5a00;padding:10px;border-radius:8px}
+.pick{cursor:pointer}.sel{outline:2px solid #7a4b3a}
+.muted{opacity:.7;font-size:13px}
+.tablewrap{overflow-x:auto}
+button:disabled{opacity:.6;cursor:not-allowed}
+button.sm{padding:3px 8px;font-size:13px}
