@@ -36,9 +36,17 @@ export async function api(path, { method = 'GET', body, authed = false } = {}) {
   } catch {
     throw new Error(`Cannot reach the server at ${API || '(VITE_API_URL is empty)'}. Is the backend running?`);
   }
-  let json = {};
+  if ([502, 503, 504].includes(res.status)) {
+    throw new Error('The server is waking up or temporarily unavailable. Wait about a minute and try again.');
+  }
+  let json = null;
   try { json = await res.json(); } catch { /* non-JSON response */ }
   if (res.status === 401 && authed) await supabase.auth.signOut();
+  // A 200 that is not JSON means the request hit a website (e.g. Netlify's index.html), not the API.
+  if (res.ok && (json === null || typeof json !== 'object')) {
+    throw new Error(`Unexpected reply from ${API + path}. VITE_API_URL must be the Render backend URL.`);
+  }
+  json = json || {};
   if (!res.ok) throw new Error(json.error || `Request failed (${res.status}) for ${API + path}`);
   return json;
 }

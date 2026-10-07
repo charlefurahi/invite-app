@@ -4,6 +4,8 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  # These three values are public by design (they are baked into the site), so Netlify must not treat them as leaked secrets.
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY,VITE_API_URL"
 
 [[redirects]]
   from = "/*"

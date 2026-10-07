@@ -24,18 +24,22 @@ app.use('/api/invite', (req, res, next) => {
 const wrap = (fn) => (req, res) => fn(req, res).catch((e) => res.status(500).json({ error: e.message }));
 
 async function auth(req, res, next) {
-  const token = (req.headers.authorization || '').replace('Bearer ', '');
-  const { data, error } = await sb.auth.getUser(token);
-  if (error || !data.user) return res.status(401).json({ error: 'Unauthorized' });
-  req.user = data.user;
-  next();
+  try {
+    const token = (req.headers.authorization || '').replace('Bearer ', '');
+    const { data, error } = await sb.auth.getUser(token);
+    if (error || !data.user) return res.status(401).json({ error: 'Unauthorized' });
+    req.user = data.user;
+    next();
+  } catch (e) { res.status(500).json({ error: e.message }); }
 }
 
 async function ownEvent(req, res, next) {
-  const { data } = await sb.from('events').select('*').eq('id', req.params.id).eq('owner_id', req.user.id).single();
-  if (!data) return res.status(404).json({ error: 'Event not found' });
-  req.event = data;
-  next();
+  try {
+    const { data } = await sb.from('events').select('*').eq('id', req.params.id).eq('owner_id', req.user.id).single();
+    if (!data) return res.status(404).json({ error: 'Event not found' });
+    req.event = data;
+    next();
+  } catch (e) { res.status(500).json({ error: e.message }); }
 }
 
 app.get('/health', (_, res) => res.send('ok'));
@@ -145,5 +149,10 @@ app.post('/api/events/:id/remind', auth, ownEvent, wrap(async (req, res) => {
   }
   res.json({ pending: (pending || []).length, emailed, whatsapp });
 }));
+
+// unknown routes answer in JSON so the frontend can show which URL was wrong
+app.use((req, res) => res.status(404).json({ error: `No such route: ${req.method} ${req.path}` }));
+// a stray error must not crash the server
+process.on('unhandledRejection', (e) => console.error('Unhandled:', e));
 
 app.listen(process.env.PORT || 3000, () => console.log('API running'));
