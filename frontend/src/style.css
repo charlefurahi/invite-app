@@ -21,3 +21,5 @@ table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:6px;borde
 .tablewrap{overflow-x:auto}
 button:disabled{opacity:.6;cursor:not-allowed}
 button.sm{padding:3px 8px;font-size:13px}
+
+.wake{position:sticky;top:0;z-index:10;background:#fff3cd;color:#5c4400;padding:10px 16px;text-align:center;font-size:14px}

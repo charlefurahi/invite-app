@@ -1,18 +1,27 @@
 import { useEffect, useState } from 'react';
 import { Routes, Route, Navigate, Link } from 'react-router-dom';
-import { supabase, api, envOk, waNumber } from './api.js';
+import { supabase, api, envOk, waNumber, onWake } from './api.js';
 import Invite from './Invite.jsx';
 import { parseGuestRows } from './importGuests.js';
 import CheckIn from './CheckIn.jsx';
 
+function WakeBanner() {
+  const [on, setOn] = useState(false);
+  useEffect(() => onWake(setOn), []);
+  return on ? <div className="wake">Connecting to the server… the free server was asleep and needs up to a minute to wake. Please wait, it continues by itself.</div> : null;
+}
+
 export default function App() {
   return (
+    <>
+    <WakeBanner />
     <Routes>
       <Route path="/i/:token" element={<Invite />} />
       <Route path="/admin" element={<Admin><Dashboard /></Admin>} />
       <Route path="/admin/checkin/:id" element={<Admin><CheckIn /></Admin>} />
       <Route path="*" element={<Navigate to="/admin" />} />
     </Routes>
+    </>
   );
 }
 

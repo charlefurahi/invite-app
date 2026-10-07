@@ -15,6 +15,9 @@ Frontend (Netlify): VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY (publishable key),
 ## Deploy
 Push to GitHub, create a Render Web Service (root dir `backend`), then a Netlify project (root dir `frontend`), then set FRONTEND_URL on Render. Never commit .env files or the secret key.
 
+## Keep Render awake
+Free plan sleeps after 15 min idle. Add a free monitor at uptimerobot.com (HTTP(s), every 5 minutes) on https://YOUR-RENDER-URL/health.
+
 ## Netlify settings
 Base directory `frontend`, build command `npm run build`, publish directory `dist` (also set in `frontend/netlify.toml`).
 Add VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY and VITE_API_URL (your Render URL, no trailing slash) under Site configuration > Environment variables, then trigger a new deploy: Vite bakes them in at build time.
