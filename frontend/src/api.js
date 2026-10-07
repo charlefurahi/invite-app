@@ -26,6 +26,10 @@ export async function api(path, { method = 'GET', body, authed = false } = {}) {
     if (!data.session) throw new Error('Please sign in again.');
     headers.Authorization = `Bearer ${data.session.access_token}`;
   }
+  // On a live site the backend URL must be set in the host's env vars (Netlify) and the site rebuilt.
+  if (import.meta.env.PROD && (!API || /localhost|127\.0\.0\.1/.test(API))) {
+    throw new Error('VITE_API_URL is not set to your Render backend URL on this site. In Netlify add it under Site configuration > Environment variables, then redeploy.');
+  }
   let res;
   try {
     res = await fetch(API + path, { method, headers, body: body ? JSON.stringify(body) : undefined });
@@ -35,6 +39,6 @@ export async function api(path, { method = 'GET', body, authed = false } = {}) {
   let json = {};
   try { json = await res.json(); } catch { /* non-JSON response */ }
   if (res.status === 401 && authed) await supabase.auth.signOut();
-  if (!res.ok) throw new Error(json.error || `Request failed (${res.status})`);
+  if (!res.ok) throw new Error(json.error || `Request failed (${res.status}) for ${API + path}`);
   return json;
 }

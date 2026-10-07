@@ -5,7 +5,9 @@ import { createClient } from '@supabase/supabase-js';
 
 const sb = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 const app = express();
-app.use(cors({ origin: process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',') : true }));
+// FRONTEND_URL may hold several comma-separated URLs; spaces and trailing slashes are ignored
+const origins = (process.env.FRONTEND_URL || '').split(',').map((u) => u.trim().replace(/\/+$/, '')).filter(Boolean);
+app.use(cors({ origin: origins.length ? origins : true }));
 app.set('trust proxy', 1);
 app.use(express.json({ limit: '200kb' }));
 
